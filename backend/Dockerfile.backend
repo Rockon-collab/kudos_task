@@ -1,0 +1,39 @@
+# FROM python:3.9-alpine
+
+# WORKDIR /backend
+
+# COPY requirements.txt .
+
+# RUN pip install -r requirements.txt
+
+# COPY . .
+
+# # EXPOSE 8000
+
+# # CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
+
+
+
+
+# Use a specific Python version based on Alpine
+FROM python:3.9-alpine
+
+# Set the working directory inside the container
+WORKDIR /backend
+
+# Install necessary dependencies for Python packages and PostgreSQL
+RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev postgresql-dev
+
+# Copy requirements.txt to the container
+COPY requirements.txt .
+
+# Install Python dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire project to the container
+COPY . .
+
+# Set the default command to run the Django app
+CMD ["gunicorn", "--workers=4", "--threads=8", "--timeout", "2000", "--reload", "core.wsgi:application", "--bind", "0.0.0.0:8000"]

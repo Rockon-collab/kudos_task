@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  backend:
+    container_name: django
+    volumes:
+      - ./backend:/backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    command: sh -c "python manage.py showmigrations &&
+                python manage.py makemigrations &&
+                python manage.py migrate &&
+                gunicorn --workers=4 --threads=8 --timeout 2000 --reload core.wsgi:application --bind 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+  frontend:
+    container_name: react
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+
+  db_postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: kudosuser
+      POSTGRES_PASSWORD: kudospassword
+      POSTGRES_DB: kudos
+    ports:
+      - 5432:5432
+    restart: always
+  
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  backend:
+  frontend:
