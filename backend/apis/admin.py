@@ -17,12 +17,13 @@ class UserAdmin(BaseUserAdmin):
         "id",
         "email",
         "organization",
+        "kudos_balance",
         "is_staff",
         "is_active",
     )
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("User Info", {"fields": ("organization",)}),
+        ("User Info", {"fields": ("organization", "kudos_balance")}),
         (
             "Permissions",
             {
