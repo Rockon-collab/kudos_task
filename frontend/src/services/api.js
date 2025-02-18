@@ -8,7 +8,7 @@ export const SignUp = ({
   password,
   password2,
 }) =>
-  ApiCaller(
+  NonAuthApiCaller(
     `api/signup/`,
     "POST",
     {
@@ -22,16 +22,17 @@ export const SignUp = ({
     process.env.REACT_APP_URL
   );
 
-export const Login = ({ email, password }) =>
-  ApiCaller(
-    `api/login/`,
-    "POST",
-    {
-      email,
-      password,
-    },
-    process.env.REACT_APP_URL
-  );
+  export const Login = ({ email, password }) => {
+    return NonAuthApiCaller(
+      `api/login/`,
+      "POST",
+      {
+        email,
+        password,
+      },
+      process.env.REACT_APP_URL
+    );
+  };
 
 export const Organizations = () =>
   NonAuthApiCaller(`api/organizations/`, "GET", {}, process.env.REACT_APP_URL);

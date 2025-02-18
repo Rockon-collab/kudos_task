@@ -61,8 +61,8 @@ const Auth = () => {
     } else {
       try {
         const { data } = await Login(formData);
-        localStorage.setItem("token", data.access);
-        localStorage.setItem("refresh", data.refresh)
+        localStorage.setItem("token", data.token.access);
+        localStorage.setItem("refresh", data.token.refresh)
         navigate("/");
       } catch (error) {
         alert("Something went wrong!");
